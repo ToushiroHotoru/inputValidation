@@ -9,8 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const isValidCarNumber = (inputValue) => {
     let formattedValue = "";
 
-    console.log(inputValue.length);
-
     switch (true) {
       case inputValue.length == 1:
         formattedValue = inputValue.toUpperCase();
@@ -58,11 +56,11 @@ document.addEventListener("DOMContentLoaded", function () {
     input.value = currentValue.toUpperCase();
 
     if (!isValidCarNumber(currentValue)) {
-      btn.disabled = true;
       const lastValidValue = currentValue.slice(0, -1);
       input.value = lastValidValue.toUpperCase();
     }
 
+    if (!regex.test(currentValue)) btn.disabled = true;
     if (regex.test(currentValue)) btn.disabled = false;
 
     if (regex.test(input.value)) input.classList.add("success");
