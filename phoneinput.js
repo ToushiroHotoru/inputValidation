@@ -2,9 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const inputDOM = document.querySelector("input[data-tel-input]");
   const btn = document.querySelector("#btn");
   const regex =
-    /^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\s?\d{2}$|^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\d{2}$/i;
-
-  btn.disabled = true;
+    /^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\s\d{2,3}$|^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\d{2,3}$/i;
 
   const isValidCarNumber = (inputValue) => {
     let formattedValue = "";
@@ -30,17 +28,23 @@ document.addEventListener("DOMContentLoaded", function () {
         return /^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}/i.test(formattedValue);
       case inputValue.length == 7:
         formattedValue = inputValue.toUpperCase();
-        return /^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\s?$|^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\d$/i.test(
+        return /^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\s$|^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\d$/i.test(
           formattedValue
         );
       case inputValue.length == 8:
         formattedValue = inputValue.toUpperCase();
-        return /^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\s?\d$|^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\d{2}$/i.test(
+        return /^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\s\d{1}$|^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\d{2}$/i.test(
           formattedValue
         );
       case inputValue.length == 9:
         formattedValue = inputValue.toUpperCase();
-        return /^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\s?\d{2}$|^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\d{2}$/.test(
+        return /^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\s\d{2,3}$|^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\d{3}$/.test(
+          formattedValue
+        );
+
+      case inputValue.length == 10:
+        formattedValue = inputValue.toUpperCase();
+        return /^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\s\d{2,3}$|^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\d{3}$/.test(
           formattedValue
         );
     }
@@ -60,11 +64,16 @@ document.addEventListener("DOMContentLoaded", function () {
       input.value = lastValidValue.toUpperCase();
     }
 
-    if (!regex.test(currentValue)) btn.disabled = true;
-    if (regex.test(currentValue)) btn.disabled = false;
+    console.log(regex.test(input.value), "test");
 
-    if (regex.test(input.value)) input.classList.add("success");
-    if (!regex.test(input.value)) input.classList.add("error");
+    if (regex.test(input.value)) {
+      input.classList.add("success");
+      btn.disabled = false;
+    }
+    if (!regex.test(input.value)) {
+      input.classList.add("error");
+      btn.disabled = true;
+    }
   };
 
   const onInputClick = async () => {
